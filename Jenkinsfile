@@ -12,7 +12,7 @@ pipeline{
                         checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'jacky', url: 'https://github.com/jacky9595/jenkins-nexus.git']]])
 
                     }
-                    stage('NEXUS'){
+                 stage('NEXUS'){
                         agent any
                         steps{
                         
