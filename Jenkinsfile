@@ -1,8 +1,3 @@
-
-
-
-
-
 pipeline{
 
     agent any
@@ -15,10 +10,21 @@ pipeline{
                     agent any
                     steps{
                         checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'jacky', url: 'https://github.com/jacky9595/jenkins-nexus.git']]])
-                        sh 'mvn clean install'
-                        sh 'mvn deploy -DskipTests -Dmaven.install.skip=true'
+
                     }
                 }
+                stage('NEXUS'){
+                        agent any
+                        steps{
+                        
+                            withMaven(mavenSettingsConfig: '4c8b0dc1-940f-4e04-8a46-f9afacb76b72')
+                                 { 
+                                   sh 'mvn clean install'
+                                   sh 'mvn deploy -DskipTests -Dmaven.install.skip=true'
+                                 
+                                 }
+                             }
+                    }
                     
                 }
 
@@ -48,6 +54,4 @@ pipeline{
 //                 deleteDir()
 //         }
     }
-
-
 
