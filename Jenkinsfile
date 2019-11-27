@@ -11,7 +11,7 @@ pipeline{
                     steps{
                         checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'jacky', url: 'https://github.com/jacky9595/jenkins-nexus.git']]])
                         sh 'mvn clean install'
-                        sh 'mvn -s /root/.m2/settings.xml deploy -DskipTests -Dmaven.install.skip=true'
+                        sh 'mvn -s /var/jenkins_home/.m2/settings.xml deploy -DskipTests -Dmaven.install.skip=true'
                     }
                 }
                     
