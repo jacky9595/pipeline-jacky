@@ -11,13 +11,15 @@ pipeline{
                 stage('SonarQube analysis') {
                     steps{
                            checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'jacky', url: 'https://github.com/jacky9595/jenkins-nexus.git']]])
-                           withSonarQubeEnv('mysonar') {
+                         script {  
+                          withSonarQubeEnv('mysonar') {
                             env.SQ_HOSTNAME = SONAR_HOST_URL;
                             env.SQ_AUTHENTICATION_TOKEN = SONAR_AUTH_TOKEN;
                             sh "/var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/mysonar/bin/sonar-scanner \
                                 -Dsonar.projectKey='test-job' \
                                 -Dsonar.sources=./src ";
                            } // SonarQube taskId is automatically attached to the pipeline context
+                         }
                     }
                 }
                 stage('ZIPEO-NEXUS'){
