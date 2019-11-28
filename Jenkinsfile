@@ -9,9 +9,11 @@ pipeline{
         stage('PASO A NEXUS'){
             parallel{
                 stage('SonarQube analysis') {
+                    steps{
                            withSonarQubeEnv('mysonar') {
                             sh "mvn clean package sonar:sonar"
                            } // SonarQube taskId is automatically attached to the pipeline context
+                    }
                 }
                 stage('ZIPEO-NEXUS'){
                     agent any
