@@ -10,12 +10,20 @@ pipeline{
             parallel{
                 stage('SONAR'){
                   agent any
-                  def sonarqubeScannerHome = tool name: 'mysonar'
-                  steps {
-                     withSonarQubeEnv('mysonar') {
-                        sh "${sonarqubeScannerHome}/bin/sonar-scanner -Dsonar.host.url=http://localhost:9000 -Dproject.settings='sonar-project.properties' -Dsonar.projectBaseDir=src"
-                      }
-                  }
+                  script {
+                    // requires SonarQube Scanner 2.8+
+                    def scannerHome = tool 'mysonar';
+
+                    withSonarQubeEnv('mysonar') {
+
+                        env.SQ_HOSTNAME = localhost:9000;
+                        env.SQ_PROJECT_KEY = "test-job";
+
+                        sh "${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=${SQ_PROJECT_KEY} \
+                                -Dsonar.sources=src ;
+                    }
+                    }
                 }
                 stage('ZIPEO-NEXUS'){
                     agent any
