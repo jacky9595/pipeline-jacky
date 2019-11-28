@@ -8,25 +8,10 @@ pipeline{
         
         stage('PASO A NEXUS'){
             parallel{
-                stage('SONAR'){
-                  agent any
-                  steps{
-                      script {
-                        // requires SonarQube Scanner 2.8+
-                        def scannerHome = tool 'mysonar';
-
-                        withSonarQubeEnv('mysonar') {
-
-                            env.SQ_HOSTNAME = "localhost:9000";
-                            env.SQ_PROJECT_KEY = "test-job";
-
-                            sh "${scannerHome}/bin/sonar-scanner \
-                                    -Dsonar.projectKey=${SQ_PROJECT_KEY} \
-                                    -Dsonar.sources=src ;"
-                        }
-                        }
-                      
-                  }
+                stage('SonarQube analysis') {
+                           withSonarQubeEnv('mysonar') {
+                            sh "'${mvnHome}/bin/mvn' clean package sonar:sonar"
+                           } // SonarQube taskId is automatically attached to the pipeline context
                 }
                 stage('ZIPEO-NEXUS'){
                     agent any
