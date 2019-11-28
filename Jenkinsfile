@@ -16,7 +16,7 @@ pipeline{
 
                     withSonarQubeEnv('mysonar') {
 
-                        env.SQ_HOSTNAME = localhost:9000;
+                        env.SQ_HOSTNAME = "localhost:9000";
                         env.SQ_PROJECT_KEY = "test-job";
 
                         sh "${scannerHome}/bin/sonar-scanner \
