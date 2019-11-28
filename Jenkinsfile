@@ -10,7 +10,7 @@ pipeline{
             parallel{
                 stage('SonarQube analysis') {
                            withSonarQubeEnv('mysonar') {
-                            sh "'${mvnHome}/bin/mvn' clean package sonar:sonar"
+                            sh "mvn clean package sonar:sonar"
                            } // SonarQube taskId is automatically attached to the pipeline context
                 }
                 stage('ZIPEO-NEXUS'){
