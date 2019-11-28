@@ -10,8 +10,8 @@ pipeline{
             parallel{
                 stage('SONAR'){
                   agent any
+                  def sonarqubeScannerHome = tool name: 'mysonar'
                   steps {
-                     def sonarqubeScannerHome = tool name: 'mysonar'
                      withSonarQubeEnv('mysonar') {
                         sh "${sonarqubeScannerHome}/bin/sonar-scanner -Dsonar.host.url=http://localhost:9000 -Dproject.settings='sonar-project.properties' -Dsonar.projectBaseDir=src"
                       }
