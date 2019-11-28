@@ -12,7 +12,8 @@ pipeline{
                   agent any
                   steps {
                      withSonarQubeEnv('mysonar') {
-                        sh 'mvn clean package sonar:sonar'
+                        def sonarqubeScannerHome = tool name: 'mysonar'
+                        sh "${sonarqubeScannerHome}/bin/sonar-scanner -Dsonar.host.url=http://localhost:9000 -Dproject.settings='sonar-project.properties' -Dsonar.projectBaseDir=src"
                       }
                   }
                 }
