@@ -6,11 +6,11 @@ pipeline{
 
     stages{
         
-        stage('PASO A NEXUS'){
+        stage('SONAR'){
             parallel{
                 stage('SonarQube analysis') {
                     steps{
-                           checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'jacky', url: 'https://github.com/jacky9595/jenkins-nexus.git']]])
+                         checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'jacky', url: 'https://github.com/jacky9595/jenkins-nexus.git']]])
                          script {  
                           withSonarQubeEnv('mysonar') {
                             env.SQ_HOSTNAME = SONAR_HOST_URL;
@@ -22,6 +22,13 @@ pipeline{
                          }
                     }
                 }
+
+                    
+                }
+
+            }
+        stage('PASO A NEXUS'){
+            parallel{
                 stage('ZIPEO-NEXUS'){
                     agent any
                     steps{
@@ -31,10 +38,10 @@ pipeline{
                     }
                 }
                     
-                }
-
             }
+
         }
+    }
 
 
 
@@ -60,5 +67,3 @@ pipeline{
 //         }
     }
 }
-
-
